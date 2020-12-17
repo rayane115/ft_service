@@ -1,0 +1,199 @@
+#video 1
+
+Pour avoir la liste des conteneurs :  ps
+docker ps 
+
+Pour avoir la liste de tous les conteneurs :  ps -a 
+docker ps -a
+
+Pour lancer un conteneur :  run
+docker run <nom de limage>     (mais il sera en status exit)
+
+Pour lancer un conteneur sans le status exit en lui donnant un nom : 
+docker run -tdi --name <nom que lon veut> <nom de l'image>
+
+Pour se connecter a un conteneur : exec
+docker exec -ti <nom du conteneur> sh
+
+---------------------------------------------------------------------------------
+
+#video 2
+
+Pour faire une redirection de port quand on lance un conteneur: -p
+docker run -tdi -p <notre port>:<port du conteneur> --name <nom> <nom de limage>
+
+Pour acceder a toutes les propriete de notre conteneur: inspect
+docker inspect <nom du conteneur>
+
+---------------------------------------------------------------------------------
+
+#video 3
+
+Pour redemarer un conteneur si il a pas ete rm : start
+docker start <nom du conteneur>
+
+Pour arreter le conteneur: stop
+docker stop <nom du conteneur>
+
+Pour supprimer completement un conteneur: rm -f
+docker rm -f <nom du conteneur>
+
+Pour monter un volume pour ne pas perdre les elements une fois le conteneur supprimer: -v
+docker run -tdi -p <notre port>:<port du conteneur> -v <chemin du repertoire que lon a cree>:<chemin du repertoire du conteneur> --name <nom> <nom de limage>
+
+---------------------------------------------------------------------------------
+
+#video 4 : volumes
+
+Pour cree un volume:
+docker volume creat <nom du volume>
+
+Pour avoir des details sur le volume:
+docker volume inspect <nom du volume>
+
+Pour liste les volumes:
+docker volume ls
+
+Pour nettoyer les volumes non utilise:
+docker volume prune
+
+Pour supprimer un volume:
+docker volume rm
+
+Pour utilise notre volume : --mount
+docker run -tdi --name <nom du conteneur> -p <redirection de port> --mount source=<nom du volume>,target=<chemin du repertoire html>
+
+--------------------------------------------------------------------------------
+
+#video 5: variable d'environnement
+
+Pour passer en parametre une variable d'environnement qui sera cree au lancement du conteneur : --env
+docker run -tdi --name <nom du conteneur> --env <NOM DE MA VARIABLE="ce que lon veut"> <nom de l'image>
+
+Pour passer un fichier de variable d'environnement(pour plus de securite): --env-file
+docker run -tdi --name <nom du conteneur> --env-file <chemin du fichier> <nom de l'image>
+
+Pour definir un nom hostname : --hostname
+docker run -tdi --name <nom du conteneur> --hostname <nom du hostname que lon veut> <nom de l'image>
+
+---------------------------------------------------------------------------------
+
+#video 6 et 7: cree une image
+
+Pour liste les image:
+docker image ls
+
+C'est quoi un dockerfile?
+1. C'est un fichier de configuration
+2. Objectif : creation d'une image
+3. Sequence d'instructions :
+        RUN : lancement de commande (apt, apk..)
+        ENV : variable d'environnement
+        EXPOSE : exposition de ports
+        VOLUME : definition de volumes
+        COPY : cp entre host et conteneur
+        ENTRYPOINT : processus maitre
+
+Pour lancer notre image :
+docker build -t <mon image:version> .
+
+
+-----------------------------------------------------------------------------------
+
+#video 8 : couches/layers
+
+Voir les differente couche:
+docker history <nom de mon image>
+
+-----------------------------------------------------------------------------------
+
+#video 9.1 et 9.2 : micro service principe
+
+Interet des micro service
+1. fractionner pour mieux maitriser l'environnement
+        -reseau
+        -version de services
+        -...
+2. fractionner pour adapter la ressources :
+        -plus de workers : produire plus
+        -plus de server web : recevoir plus de monde
+3. augmenter la vitesse de deploiement
+4.reduire les single point of failure (SPOF)
+
+Pour voir le conteneur tourne sur quel port
+nmap -PM <adress ip du conteneur>
+
+---------------------------------------------------------------------------------
+
+#video 10: cache
+
+Pour ne pas utiliser le cache a la recreation d'une image:
+docker build --no-cache -t <nom du conteneur> .
+
+---------------------------------------------------------------------------------
+
+#video 11: Les reseau
+
+Pour visualiser tout les reseau disponible :
+docker network ls
+
+bridge personalise:
+creation de mon reseau:
+docker network create -d bridge --subnet 172.30.0.0/16 mynetwork
+utilisation:
+docker run -tid --name <nom du conteneur> --network <nom de limage>
+
+--------------------------------------------------------------------------------
+
+
+#video 14:
+
+crer un tag: 
+docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+
+----------------------------------------------------------------------------------
+
+#video 15: sauvegarder une image en .tar
+
+Pour sauvegarder une image en .tar:
+docker save -o dir/name.file <registry><image>:<version>
+
+Pour charger une image
+docker load -i <fichier.tar>
+
+----------------------------------------------------------------------------------
+
+#video 16
+
+----------------------------------------------------------------------------------
+
+#video17
+
+----------------------------------------------------------------------------------
+
+#video 18
+----------------------------------------------------------------------------------
+
+#video 19: astuce
+
+lister les id de tous les conteneurs :
+docker ps -aq
+
+Supprimer tous les conteneurs :
+docker rm -f $(docker ps -aq)
+
+Pour supprimer mon image:
+docker rmi <id de mon image>
+
+Pour supprimer tout ce qui n'est pas utilise:
+docker systeme prune
+
+------------------------------------------------------------------------------------
+#video 20
+
+------------------------------------------------------------------------------------
+
+#video 21 : 
+
+
+

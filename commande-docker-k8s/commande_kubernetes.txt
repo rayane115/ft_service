@@ -1,0 +1,159 @@
+                                           1. Les objets Kubernetes 
+
+
+ -Kubernetes a pour objectif principal de dissimuler la complexité de la gestion d’un parc de conteneurs, et pour cela, différents objets existent pour vous faciliter la vie, dont notamment :
+
+    *Node : Un node ("nœud" en fr) est une machine de travail du cluster Kubernetes. Ce sont des unités de travail qui peuvent être physiques, 
+    virtuelles mais aussi des instances cloud.
+
+    *Pod : Il s'agit de l'unité la plus petite de K8s, un pod encapsule le ou les conteneur(s) formant votre application conteneurisée partageant ainsi la même stack réseau 
+    (chaque pod se voit attribuer une adresse IP unique) et le même stockage, plus précisément un volume partagé (tous les conteneurs du pod peuvent accéder aux volumes 
+    partagés, ce qui permet à ces conteneurs de partager plus facilement des données).
+   
+    *Replicas : c'est le nombre d'instances d'un Pod ("réplique" en fr)
+   
+    *ReplicaSet : s'assure que les réplicas spécifiés sont actifs
+  
+    *Deployment : défini l'état désiré et fournit des mises à jour déclaratives de vos Pods et ReplicaSets.
+  
+    *Service : Un service peut être défini comme un ensemble logique de pods exposés en tant que service réseau. 
+    C'est un niveau d'abstraction au-dessus du pod, qui fournit une adresse IP et un nom DNS unique pour un ensemble de pods. Avec les Services, il est très facile de gérer 
+    la configuration de Load Balancing (équilibreur de charge) permettant ainsi aux pods de scaler plus facilement.
+  
+    *Endpoint : Représente l'adresse IP et le port d'un service, il est automatiquement créé lors de la création d'un service avec les pods correspondants.
+
+------------------------------------------------------------------------------------
+
+                                        2.Les composants des nodes
+
+Kubernetes suit l’architecture maître-esclave, le maître plus communément appelé master existe principalement pour gérer 
+votre cluster Kubernetes. . Les esclaves sont quant à eux plus connus sous le nom de workers (on les appellent aussi minions ) 
+et ne sont là que pour fournir de la capacité et n'ont pas le pouvoir d'ordonner à une autre node ce qu'il peut ou ne peut pas faire. 
+Les composants clés du master et worker sont définis dans la section suivante. 
+
+---
+
+Les composants du Master:
+     Sur un node de type master, nous aurons les composants suivants :
+
+    *kube-apiserver : point d'entrée exposant l'API HTTP Rest de k8s depuis le maître du cluster Kubernetes. 
+    Différents outils et bibliothèques peuvent facilement communiquer avec l'API.
+    
+    *kube-scheduler : Il est responsable de la répartition et l'utilisation de la charge de travail sur les 
+    nœuds du cluster selon les ressources nécessaires et celles disponibles.
+    
+    *kube-controller-manager : ce composant est responsable de la plupart des collecteurs qui récupèrent des 
+    informations du cluster tout en effectuant des actions de correctives en cas de besoin, en apportant des 
+    modifications pour amener l'état actuel du serveur à l'état souhaité. Il est composé de plusieurs contrôleurs, 
+    on peut par exemple retrouver un contrôleur de réplication qui va s'assurer que vous avez le nombre désiré de 
+    répliques sur vos pods, mais aussi d'autres contrôleurs clés comme , le contrôleur de Endpoints, 
+    le contrôleur d’espace de noms et le contrôleur de compte de service.
+    
+    *cloud-controller-manager : effectue les mêmes actions que le kube-controller-manager mais pour des fournisseurs 
+    de cloud sous-jacents (AWS, Azure, Google Cloud Platform, etc ...).
+    
+    *etcd : il stocke les informations de configuration pouvant être utilisées par chacun des nœuds du cluster. 
+    Ces informations sont conservées sous forme de clé et valeurs à haute disponibilité (le projet est téléchargeable ici)
+
+---
+
+Les composants du Workers :
+
+ Sur chaque worker, nous aurons les composants suivants :
+
+    *kubelet : Il s’agit d’un agent qui s'exécute dans chaque nœud chargé de relayer les informations au Master. 
+    Il interagit avec la base de données etcd du Master pour récupérer des informations afin de connaître les tâches 
+    à effectuer. Il assume la responsabilité de maintenir en bon état de fonctionnement les conteneurs d'un pod et 
+    s'assure qu'ils tournent conformément à la spécification. Il ne gère pas les conteneurs qui n'ont pas été créés 
+    par Kubernetes. Il communique avec le Master et redémarre le conteneur défaillant en cas de crash.
+    
+    *kube-proxy : il active l'abstraction réseau du Service Kubernetes en maintenant les règles du réseau et permet 
+    l'exposition des services vers l'extérieur.
+    
+    *Environnement d'exécution de conteneurs : Il faut vous aussi une solution d'exécution d'applications conteneurisées, 
+    vous pouvez utiliser soit le moteur Docker mais Kubernetes prend également en charge l'utilisation de rkt comme moteur 
+    d'exécution du conteneur (que nous verrons pas dans ce cours).
+
+----------------------------------------------------------------------
+
+                                                3. Communication avec le cluster 
+                                            
+Pour communiquer avec le cluster Kubernetes, on peut utiliser le binaire kubectl, ou une interface web de management nommé Dashboard. 
+
+---
+
+kubeclt (ligne de commande):
+    L'outil en ligne de commande Kubernetes, kubectl, vous permet d'exécuter des commandes sur les clusters Kubernetes 
+    afin de créer et gérer des objets k8s et interagir avec l'API Kubernetes. Vous pouvez utiliser kubectl pour déployer des applications, 
+    inspecter et gérer les ressources du cluster et afficher les logs. Nous aurons l'occasion d'utiliser cet outil dans les chapitres suivants. 
+
+Dashboard (interface web):
+    Dashboard est l'interface utilisateur Web officielle de Kubernetes. Il fournit une vue d'ensemble des applications en cours
+     d'exécution sur votre cluster Kubernetes. Il permet aux administrateurs de surveiller et gérer les opérations de leurs 
+     clusters Kubernetes, dépanner les applications conteneurisées et gérer les ressources du cluster. 
+
+----------------------------------------------------------------------
+                                            commande
+
+-Demarer un cluster:
+> minikube start
+
+-Arrêter un cluster Kubernetes en cours d'exécution:
+> minikebe stop
+
+-supprimer votre cluster Minikube
+> minikube delete
+
+-Pour obtenir les noms des champs configurables de notre nœud Minikube, nous exécuterons alors la commande suivante : 
+> minikube config -h
+
+-vérifier l'état de notre cluster Kubernetes:
+> minikube status
+
+-récupérer la liste des nœuds de notre cluster Kubernetes : 
+> kubectl get nodes
+
+-récupérer des informations sur notre cluster Kubernetes:
+> kubectl cluster-info
+
+-fouiller dans les logs de Minikube:
+> minikube logs
+
+-Récupérer l'adresse IP du cluster en cours d'exécution:
+> minikube ip
+
+-vérifier si votre minikube est à jour de la façon suivante : 
+> minikube update-check
+
+-faciliter le lancement d'un Dashboard : 
+> minikube dashboard
+
+-créer un objet Kubernetes:
+> kubectl create
+
+-créer notre pod Kubernetes
+> kubectl create -f <fichier.yaml>
+
+-liste des pods disponibles dans notre cluster Kubernetes : 
+> kubectl get pods
+
+-qui permet de décrire et de récupérer les informations détaillées de votre pod:
+> kubectl describe <KUBERNETES OBJECT> <OBJECT NAME>
+
+- appliquer des changements d'un Pod depuis votre template YAML 
+> kubectl apply -f fichier.yaml
+
+-  Exécuter une commande d'un conteneur de votre pod
+> kubectl exec <POD NAME> -c <CONTAINER NAME> <COMMAND>
+
+-  scaler les répliques de vos Pods sans changer votre template YAML :
+> kubectl scale --replicas=4 -f fichier.yaml
+
+- vérifier la liste des ReplicaSets disponibles dans notre cluster k8s : 
+> kubectl get replicasets
+
+- supprimer votre ReplicaSet : 
+> kubectl delete ReplicaSet <REPLICASET NAME>
+
+- liste des services disponibles dans notre cluster Kubernetes : 
+> kubectl get svc
