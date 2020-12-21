@@ -157,3 +157,6 @@ Dashboard (interface web):
 
 - liste des services disponibles dans notre cluster Kubernetes : 
 > kubectl get svc
+
+- liste des différents namespace
+> kubectl get ns
