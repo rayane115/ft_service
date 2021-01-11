@@ -29,6 +29,12 @@ echo "\e[93mBuilding Phpmyadmin:\e[0m"
 docker build -t my_phpmyadmin srcs/phpmyadmin
 echo "\e[93mBuilding Wordpress:\e[0m"
 docker build -t my_wordpress srcs/wordpress
+echo "\e[93mBuilding Influxdb:\e[0m"
+docker build -t my_influxdb srcs/influxdb
+echo "\e[93mBuilding Telegraf:\e[0m"
+docker build -t my_telegraf srcs/telegraf
+echo "\e[93mBuilding Grafana:\e[0m"
+docker build -t my_grafana srcs/grafana
 eval $(minikube docker-env -u)
 ######################################
 #          Config YAML               #
@@ -41,12 +47,18 @@ echo "\e[91mDeployement PHPMYADMIN:\e[0m"
 kubectl apply -f php-pod.yaml
 echo "\e[91mDeployement WORDPRESS:\e[0m" 
 kubectl apply -f wordpress-pod.yaml
+echo "\e[91mDeployement INFLUXDB:\e[0m" 
+kubectl apply -f influxdb-pod.yaml
+echo "\e[91mDeployement TELEGRAF:\e[0m"
+kubectl apply -f telegraf-pod.yaml
+echo "\e[91mDeployement GRAFANA:\e[0m"
+kubectl apply -f grafana-pod.yaml
 
 ######################################
 #        Dashboard kubernetes        #
 ######################################
 
- clear && echo -ne "$_GREEN
+echo -ne "$_GREEN
 	        ╔══════════════════════╗
 chargement	║██████████████████████║  (100%)
 	        ╚══════════════════════╝\n"
