@@ -57,12 +57,13 @@ kubectl apply -f grafana-pod.yaml
 ######################################
 #        Dashboard kubernetes        #
 ######################################
-#kubectl cp <grafana_pod>:grafana/data/grafana.db /home/ejawe/Documents/42/ft_services/srcs/grafana/grafana.db
+#kubectl cp grafana-deployment-57bd4656f-bz8xr:grafana/data/grafana.db /home/user42/Bureau/ft_service12/srcs/grafana/grafana.db
 echo -ne "$_GREEN
 	        ╔══════════════════════╗
 chargement	║██████████████████████║  (100%)
 	        ╚══════════════════════╝\n"
-minikube dashboard
+xterm -hold -e "minikube dashboard" &
+
 
 echo -ne 	"\n\n\033[1;36m
 ███████╗████████╗     ███████╗███████╗██████╗ ██╗   ██╗██╗ ██████╗███████╗███████╗
