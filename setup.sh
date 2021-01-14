@@ -35,6 +35,8 @@ echo "\e[93mBuilding Telegraf:\e[0m"
 docker build -t my_telegraf srcs/telegraf
 echo "\e[93mBuilding Grafana:\e[0m"
 docker build -t my_grafana srcs/grafana
+echo "\e[93mBuilding ftps:\e[0m"
+docker build -t my_ftps srcs/ftps
 eval $(minikube docker-env -u)
 ######################################
 #          Config YAML               #
@@ -53,17 +55,40 @@ echo "\e[91mDeployement TELEGRAF:\e[0m"
 kubectl apply -f telegraf-pod.yaml
 echo "\e[91mDeployement GRAFANA:\e[0m"
 kubectl apply -f grafana-pod.yaml
-
+echo "\e[91mDeployement FTPS:\e[0m"
+kubectl apply -f ftps-pod.yaml
 ######################################
 #        Dashboard kubernetes        #
 ######################################
-#kubectl cp grafana-deployment-57bd4656f-bz8xr:grafana/data/grafana.db /home/user42/Bureau/ft_service12/srcs/grafana/grafana.db
+xterm -hold -e "minikube dashboard" &
+######################################
+#        Pour clean                  #
+######################################
+#kubectl delete -f ftps-pod.yaml
+#kubectl delete -f grafana-pod.yaml
+#kubectl delete -f influxdb-pod.yaml
+#kubectl delete -f mySQL-pod.yaml
+#kubectl delete -f nginx-pod.yaml
+#kubectl delete -f php-pod.yaml
+#kubectl delete -f wordpress-pod.yaml
+#kubectl delete -f telegraf-pod.yaml
+fi
+######################################
+#        Mot de passe                #
+######################################
+#phpmyadmin = user: root  /  mdp : password
+#wordpress  = user: root / mdp : password
+#			  user: utilisateur1 / mdp : password
+#			  user: utilisateur2/ mdp : password
+#telegraf   = user : root / mdp : password
+#grafana    = user : admin / mdp : password
+######################################
+#        Pour faire bogosse          #
+######################################
 echo -ne "$_GREEN
 	        ╔══════════════════════╗
 chargement	║██████████████████████║  (100%)
 	        ╚══════════════════════╝\n"
-xterm -hold -e "minikube dashboard" &
-
 
 echo -ne 	"\n\n\033[1;36m
 ███████╗████████╗     ███████╗███████╗██████╗ ██╗   ██╗██╗ ██████╗███████╗███████╗
@@ -74,3 +99,5 @@ echo -ne 	"\n\n\033[1;36m
 ╚═╝        ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝╚══════╝╚══════╝
 e)
                                                                                   \n\n"
+
+#kubectl cp grafana-deployment-57bd4656f-bz8xr:grafana/data/grafana.db /home/user42/Bureau/ft_service12/srcs/grafana/grafana.db																				  
