@@ -60,7 +60,7 @@ kubectl apply -f ftps-pod.yaml
 ######################################
 #        Dashboard kubernetes        #
 ######################################
-xterm -hold -e "minikube dashboard" &
+minikube dashboard
 ######################################
 #        Pour clean                  #
 ######################################
