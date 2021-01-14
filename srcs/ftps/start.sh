@@ -1,5 +1,10 @@
-echo -e "$PASSWORD\n$PASSWORD" | adduser -h ftp/$USER -s /sbin/nologin $USER
-mkdir -p ftp/$USER
-chown $USER:$USER ftp/$USER
+#!/bin/sh
 
-exec /usr/sbin/vsftpd -opasv_min_port=21000 -opasv_max_port=21001 -opasv_address=192.168.49.2 /etc/vsftpd/vsftpd.conf
+#les user sont répertoriés dans /etc/passwd
+adduser -D $USER  #adduser -D : ne met pas de mdp et le dir home est automatiquement crée
+echo "$USER:$PASSWORD" | chpasswd #chpasswd modifie le mdp
+echo "$USER" >/etc/vsftpd/chroot.list #ajouter à la changre root list pour que l'utilisateur n'ai acces qu'à son propre directory
+
+ /usr/sbin/vsftpd -opasv_min_port=30000 -opasv_max_port=30001 -opasv_address=172.17.0.2 /etc/vsftpd/vsftpd.conf #demarrer avec les bon port et la bonne ip externe
+
+# permet denvoyer plusieur fichier en meme temps , pour notre exemple 9 en meme temps 

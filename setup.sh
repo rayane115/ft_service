@@ -100,4 +100,4 @@ echo -ne 	"\n\n\033[1;36m
 e)
                                                                                   \n\n"
 
-#kubectl cp grafana-deployment-57bd4656f-bz8xr:grafana/data/grafana.db /home/user42/Bureau/ft_service12/srcs/grafana/grafana.db																				  
+#kubectl cp grafana-deployment-57bd4656f-j9qpz:grafana/data/grafana.db /home/user42/Bureau/ft_service12/srcs/grafana/grafana.db																				  
