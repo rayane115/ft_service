@@ -72,7 +72,7 @@ xterm -hold -e "minikube dashboard" &
 #kubectl delete -f php-pod.yaml
 #kubectl delete -f wordpress-pod.yaml
 #kubectl delete -f telegraf-pod.yaml
-fi
+
 ######################################
 #        Mot de passe                #
 ######################################

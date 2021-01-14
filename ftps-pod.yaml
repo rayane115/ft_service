@@ -42,7 +42,7 @@ spec:
         imagePullPolicy: Never
         env:
           - name: USER
-            value: root
+            value: user
           - name: PASSWORD
             value: password
         ports:
