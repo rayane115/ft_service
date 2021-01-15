@@ -100,4 +100,10 @@ echo -ne 	"\n\n\033[1;36m
 e)
                                                                                   \n\n"
 
-#kubectl cp grafana-deployment-57bd4656f-j9qpz:grafana/data/grafana.db /home/user42/Bureau/ft_service12/srcs/grafana/grafana.db																				  
+#kubectl cp grafana-deployment-57bd4656f-j9qpz:grafana/data/grafana.db /home/user42/Bureau/ft_service12/srcs/grafana/grafana.db
+#kubectl exec deploy/wordpress -- pkill php-fpm7
+#kubectl exec deploy/grafana-deployment -- pkill grafana-server
+#kubectl exec deploy/ftps -- pkill vsftpd
+#kubectl exec deploy/nginx -- pkill nginx
+#kubectl exec deploy/mysql -- pkill mysqld
+#															  

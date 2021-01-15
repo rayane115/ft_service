@@ -51,6 +51,11 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql
+        livenessProbe:
+          exec:
+            command: ["mysqladmin", "ping"]
+          initialDelaySeconds: 60
+          periodSeconds: 20
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
